@@ -1,14 +1,14 @@
 extends Node3D
 
 @export var grid_size: int = 11
-@export var cell_size: float = 2.0
+@export var cell_size: int = 2
 @export var FloorScene: PackedScene
 @export var WallScene: PackedScene  # Optional
 
 func _ready() -> void:
 	generate_grid()
 
-func generate_grid() -> void:
+func generate_grid() -> void:	
 	for x in range(grid_size):
 		for z in range(grid_size):
 			var tile_position = Vector3(x * cell_size, 0, z * cell_size)
