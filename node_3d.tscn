@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://cv0lr60p4mpwg"]
+[gd_scene load_steps=8 format=3 uid="uid://cv0lr60p4mpwg"]
 
+[ext_resource type="PackedScene" uid="uid://b3g0aslc1mex" path="res://floor.tscn" id="1_8dl7k"]
 [ext_resource type="Script" uid="uid://da4nyy3ji8v64" path="res://Maze-Game/player-movement.gd" id="1_vun3r"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_htg03"]
@@ -15,11 +16,6 @@ sky = SubResource("Sky_vun3r")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_htg03"]
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_vun3r"]
-data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
-
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_htg03"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_vun3r"]
@@ -34,14 +30,7 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_8dl7k")
 
-[node name="floor" type="MeshInstance3D" parent="."]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
-mesh = SubResource("PlaneMesh_htg03")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="floor"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="floor/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_vun3r")
+[node name="floor" parent="." instance=ExtResource("1_8dl7k")]
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
 script = ExtResource("1_vun3r")
