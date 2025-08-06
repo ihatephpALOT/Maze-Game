@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://cv0lr60p4mpwg"]
+[gd_scene load_steps=10 format=3 uid="uid://cv0lr60p4mpwg"]
 
 [ext_resource type="PackedScene" uid="uid://b3g0aslc1mex" path="res://floor.tscn" id="1_8dl7k"]
 [ext_resource type="Script" uid="uid://da4nyy3ji8v64" path="res://Maze-Game/player-movement.gd" id="1_vun3r"]
 [ext_resource type="Script" uid="uid://v2ipo5lb6jui" path="res://Maze-Game/grid_generator.gd" id="3_uqjpi"]
+[ext_resource type="PackedScene" uid="uid://bslhwq0x25qkm" path="res://wall.tscn" id="4_k1vdm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_htg03"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -51,3 +52,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.82445, 0)
 
 [node name="GridGenerator" type="Node3D" parent="."]
 script = ExtResource("3_uqjpi")
+
+[node name="Wall" parent="GridGenerator" instance=ExtResource("4_k1vdm")]
+
+[node name="floor" parent="GridGenerator" instance=ExtResource("1_8dl7k")]
