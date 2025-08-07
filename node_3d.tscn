@@ -52,7 +52,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.82445, 0)
 script = ExtResource("3_uqjpi")
 FloorScene = ExtResource("1_8dl7k")
 WallScene = ExtResource("4_k1vdm")
-
-[node name="Wall" parent="GridGenerator" instance=ExtResource("4_k1vdm")]
-
-[node name="floor" parent="GridGenerator" instance=ExtResource("1_8dl7k")]

@@ -22,14 +22,14 @@ func generate_grid() -> void:
 			# Walls between tiles
 			if WallScene:
 				# Right wall (between tiles)
-				if x < grid_size - 1:
+				if x < grid_size :
 					var wall_right = WallScene.instantiate()
 					wall_right.position = tile_position + Vector3(cell_size / 2, 0, 0)
 					wall_right.rotation_degrees.y = 90
 					add_child(wall_right)
 
 				# Bottom wall (between tiles)
-				if z < grid_size - 1:
+				if z < grid_size:
 					var wall_bottom = WallScene.instantiate()
 					wall_bottom.position = tile_position + Vector3(0, 0, cell_size / 2)
 					add_child(wall_bottom)
