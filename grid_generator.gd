@@ -5,6 +5,7 @@ extends Node3D
 @export var FloorScene: PackedScene
 @export var WallScene: PackedScene  # Optional
 
+
 func _ready() -> void:
 	generate_grid()
 
