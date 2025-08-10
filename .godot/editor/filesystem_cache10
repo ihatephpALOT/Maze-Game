@@ -1,0 +1,12 @@
+ea4bc82a6ad023ab7ee23ee620429895
+::res://::1754620855
+floor.tscn::PackedScene::128400395865905055::1754535168::0::1::::<><><>0<>0<><>::
+icon.svg::CompressedTexture2D/CompressedTexture2D::4289535977906813231::1754444037::1754444055::1::::<><><>0<>0<>3049305bb0abb93ec2d051c6f18ff8b3<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+wall.tscn::PackedScene::3672993210963620960::1754538200::0::1::::<><><>0<>0<><>::
+::res://Maze-Game/::1754538532
+floor.tscn::PackedScene/PackedScene::5975304194917953173::1754449282::0::1::::<><><>0<>0<><>::
+grid_generator.gd::GDScript::1530217220782389180::1754538532::0::1::::<>Node3D<><>0<>0<><>::
+node_3d.tscn::PackedScene::6299116440617930622::1754538532::0::1::::<><><>0<>0<><>::uid://b3g0aslc1mex::::res://floor.tscn<>uid://da4nyy3ji8v64::::res://Maze-Game/player-movement.gd<>uid://v2ipo5lb6jui::::res://Maze-Game/grid_generator.gd<>uid://bslhwq0x25qkm::::res://wall.tscn
+player-movement.gd::GDScript/GDScript::7219962490142577207::1754446616::0::1::::<>CharacterBody3D<><>0<>0<><>::
+README.md::TextFile/TextFile::-1::1754444217::0::1::::<><><>0<>0<><>::
+wall.tscn::PackedScene/PackedScene::2314492804026566129::1754449282::0::1::::<><><>0<>0<><>::
