@@ -3,7 +3,7 @@
 extends Node3D
 
 @export var grid_size: int = 11
-@export var cell_size: float = 2.0
+@export var cell_size: float = 1.0
 @export var FloorScene: PackedScene
 @export var WallScene: PackedScene
 
