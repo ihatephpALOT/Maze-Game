@@ -3,47 +3,129 @@ extends Node3D
 @export var grid_size: int = 11
 @export var cell_size: float = 2.0
 @export var FloorScene: PackedScene
-@export var WallScene: PackedScene  # Optional
+@export var WallScene: PackedScene
 
+class Cell:
+	var x:int
+	var z:int
+	var visited:bool = false
+	var has_top_wall:bool   = true
+	var has_bottom_wall:bool = true
+	var has_left_wall:bool  = true
+	var has_right_wall:bool = true
 
-func _ready() -> void:
-	generate_grid()
+	func _init(x:int,z:int):
+		self.x = x
+		self.z = z
 
-func generate_grid() -> void:
+var grid := []      # 2D array of Cell
+var stack := []     # for backtracking
+
+func _ready()->void:
+	# 1. build grid of Cell objects
+	for x in range(grid_size):
+		grid.append([])
+		for z in range(grid_size):
+			grid[x].append(Cell.new(x, z))
+
+	# 2. run the recursive backtracker on our grid
+	_generate_maze()
+
+	# 3. instantiate floors + walls based on result
+	_spawn_level()
+
+# --------------------------
+# Maze generation algorithm
+# --------------------------
+func _generate_maze()->void:
+	var current = grid[0][0]
+	current.visited = true
+	stack.push_back(current)
+
+	while stack.size() > 0:
+		current = stack[-1]
+		var neighbours = _get_unvisited_neighbours(current)
+
+		if neighbours.size() > 0:
+			var next = neighbours[randi() % neighbours.size()]
+			# Remove wall between current and next
+			_remove_wall(current, next)
+			next.visited = true
+			stack.push_back(next)
+		else:
+			stack.pop_back()
+
+func _get_unvisited_neighbours(cell: Cell)->Array:
+	var list := []
+
+	# north (z - 1)
+	if cell.z > 0 and not grid[cell.x][cell.z - 1].visited:
+		list.append(grid[cell.x][cell.z - 1])
+	# south (z + 1)
+	if cell.z < grid_size - 1 and not grid[cell.x][cell.z + 1].visited:
+		list.append(grid[cell.x][cell.z + 1])
+	# west (x - 1)
+	if cell.x > 0 and not grid[cell.x - 1][cell.z].visited:
+		list.append(grid[cell.x - 1][cell.z])
+	# east (x + 1)
+	if cell.x < grid_size - 1 and not grid[cell.x + 1][cell.z].visited:
+		list.append(grid[cell.x + 1][cell.z])
+
+	return list
+
+func _remove_wall(a:Cell, b:Cell)->void:
+	# b is above a
+	if b.x == a.x and b.z == a.z - 1:
+		a.has_top_wall = false
+		b.has_bottom_wall = false
+	# b is below a
+	elif b.x == a.x and b.z == a.z + 1:
+		a.has_bottom_wall = false
+		b.has_top_wall = false
+	# b is to the left of a
+	elif b.z == a.z and b.x == a.x - 1:
+		a.has_left_wall = false
+		b.has_right_wall = false
+	# b is to the right of a
+	elif b.z == a.z and b.x == a.x + 1:
+		a.has_right_wall = false
+		b.has_left_wall = false
+
+# --------------------------
+# Spawning the actual scenes
+# --------------------------
+func _spawn_level()->void:
 	for x in range(grid_size):
 		for z in range(grid_size):
-			var tile_position = Vector3(x * cell_size, 0, z * cell_size)
+			var c = grid[x][z]
+			var pos = Vector3(x * cell_size, 0, z * cell_size)
 
-			# Floor tile
+			# floor
 			if FloorScene:
-				var tile = FloorScene.instantiate()
-				tile.position = tile_position
-				add_child(tile)
+				var f = FloorScene.instantiate()
+				f.position = pos
+				add_child(f)
 
-			# Walls between tiles
+			# walls
 			if WallScene:
-				# Right wall (between tiles)
-				if x < grid_size :
-					var wall_right = WallScene.instantiate()
-					wall_right.position = tile_position + Vector3(cell_size / 2, 0, 0)
-					wall_right.rotation_degrees.y = 90
-					add_child(wall_right)
+				if c.has_right_wall:
+					var w_r = WallScene.instantiate()
+					w_r.position = pos + Vector3(cell_size/2, 0, 0)
+					w_r.rotation_degrees.y = 90
+					add_child(w_r)
+				if c.has_bottom_wall:
+					var w_b = WallScene.instantiate()
+					w_b.position = pos + Vector3(0,0,cell_size/2)
+					add_child(w_b)
 
-				# Bottom wall (between tiles)
-				if z < grid_size:
-					var wall_bottom = WallScene.instantiate()
-					wall_bottom.position = tile_position + Vector3(0, 0, cell_size / 2)
-					add_child(wall_bottom)
+	# extra top and left outer walls
+	for x in range(grid_size):
+		var outer_t = WallScene.instantiate()
+		outer_t.position = Vector3(x*cell_size,0,-cell_size/2)
+		add_child(outer_t)
 
-	# Add final outer walls along the top and left edges
-	if WallScene:
-		for x in range(grid_size):
-			var top_wall = WallScene.instantiate()
-			top_wall.position = Vector3(x * cell_size, 0, -cell_size / 2)
-			add_child(top_wall)
-
-		for z in range(grid_size):
-			var left_wall = WallScene.instantiate()
-			left_wall.position = Vector3(-cell_size / 2, 0, z * cell_size)
-			left_wall.rotation_degrees.y = 90
-			add_child(left_wall)
+	for z in range(grid_size):
+		var outer_l = WallScene.instantiate()
+		outer_l.position = Vector3(-cell_size/2,0,z*cell_size)
+		outer_l.rotation_degrees.y = 90
+		add_child(outer_l)
