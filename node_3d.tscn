@@ -40,7 +40,7 @@ transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_htg03")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40968, 0)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 1, 0)
 shape = SubResource("ConvexPolygonShape3D_vun3r")
 
 [node name="Neck" type="Node3D" parent="CharacterBody3D"]
