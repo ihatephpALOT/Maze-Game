@@ -1,3 +1,5 @@
+# Maze Hunt - ZaGuh - Pre-Pre-Alpha
+
 extends Node3D
 
 @export var grid_size: int = 11
