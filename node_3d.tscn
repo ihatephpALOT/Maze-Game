@@ -36,15 +36,15 @@ environment = SubResource("Environment_8dl7k")
 script = ExtResource("1_vun3r")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50168, 0)
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_htg03")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50168, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40968, 0)
 shape = SubResource("ConvexPolygonShape3D_vun3r")
 
 [node name="Neck" type="Node3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.82445, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Neck"]
 
