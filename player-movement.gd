@@ -8,8 +8,8 @@ const MOUSE_SENSITIVITY = 0.003
 @onready var camera = $Neck/Camera3D
 
 var pitch: float = 0.0
-var MAX_PITCH := deg_to_rad(89.0)
-var MIN_PITCH := deg_to_rad(-89.0)
+var MAX_PITCH := deg_to_rad(30.0)
+var MIN_PITCH := deg_to_rad(-40.0)
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)

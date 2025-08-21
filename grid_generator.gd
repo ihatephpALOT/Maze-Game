@@ -1,11 +1,12 @@
 # Maze Hunt - ZaGuh - Pre-Pre-Alpha
-
 extends Node3D
 
 @export var grid_size: int = 11
 @export var cell_size: float = 1.0
 @export var FloorScene: PackedScene
 @export var WallScene: PackedScene
+@export var minimap_path: NodePath   # drag HUD/minimap here in the editor
+@export var player_path: NodePath    # drag your Player (CharacterBody3D) here
 
 class Cell:
 	var x:int
@@ -16,7 +17,7 @@ class Cell:
 	var has_left_wall:bool  = true
 	var has_right_wall:bool = true
 
-	func _init(x:int,z:int):
+	func _init(x:int, z:int):
 		self.x = x
 		self.z = z
 
@@ -25,16 +26,24 @@ var stack := []     # for backtracking
 
 func _ready()->void:
 	# 1. build grid of Cell objects
-	for x in range(grid_size):
+	for ix in range(grid_size):
 		grid.append([])
-		for z in range(grid_size):
-			grid[x].append(Cell.new(x, z))
+		for iz in range(grid_size):
+			grid[ix].append(Cell.new(ix, iz))
 
 	# 2. run the recursive backtracker on our grid
 	_generate_maze()
 
 	# 3. instantiate floors + walls based on result
 	_spawn_level()
+
+	# 4. hook up minimap HUD
+	if minimap_path != NodePath("") and player_path != NodePath(""):
+		var hud = get_node(minimap_path)
+		hud.grid_ref = grid
+		hud.player_ref = get_node(player_path)
+		hud.cell_size = cell_size
+		hud.grid_size = grid_size
 
 # --------------------------
 # Maze generation algorithm
@@ -50,8 +59,7 @@ func _generate_maze()->void:
 
 		if neighbours.size() > 0:
 			var next = neighbours[randi() % neighbours.size()]
-			# Remove wall between current and next
-			_remove_wall(current, next)
+			_remove_wall(current, next)  # knock wall between current and next
 			next.visited = true
 			stack.push_back(next)
 		else:
@@ -97,10 +105,10 @@ func _remove_wall(a:Cell, b:Cell)->void:
 # Spawning the actual scenes
 # --------------------------
 func _spawn_level()->void:
-	for x in range(grid_size):
-		for z in range(grid_size):
-			var c = grid[x][z]
-			var pos = Vector3(x * cell_size, 0, z * cell_size)
+	for ix in range(grid_size):
+		for iz in range(grid_size):
+			var c = grid[ix][iz]
+			var pos = Vector3(ix * cell_size, 0, iz * cell_size)
 
 			# floor
 			if FloorScene:
@@ -121,13 +129,13 @@ func _spawn_level()->void:
 					add_child(w_b)
 
 	# extra top and left outer walls
-	for x in range(grid_size):
+	for ix in range(grid_size):
 		var outer_t = WallScene.instantiate()
-		outer_t.position = Vector3(x*cell_size,0,-cell_size/2)
+		outer_t.position = Vector3(ix*cell_size,0,-cell_size/2)
 		add_child(outer_t)
 
-	for z in range(grid_size):
+	for iz in range(grid_size):
 		var outer_l = WallScene.instantiate()
-		outer_l.position = Vector3(-cell_size/2,0,z*cell_size)
+		outer_l.position = Vector3(-cell_size/2,0,iz*cell_size)
 		outer_l.rotation_degrees.y = 90
 		add_child(outer_l)
